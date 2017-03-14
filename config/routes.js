@@ -4,20 +4,18 @@ var Router = ReactRouter.Router;
 var Route = ReactRouter.Route;
 var hashHistory =  ReactRouter.hashHistory;
 var IndexRoute = require("react-router").IndexRoute;
-var Main = require("../components/Main");
-var Search = require("../components/Search");
-var Results = require("../components/Results");
-var Saved = require("../components/Saved");
+var Main = require("../components/Main").default;
+var Search = require("../components/Search").default;
+var Results = require("../components/Results").default;
+var Saved = require("../components/Saved").default;
 
 
 var routes = (
     <Router history={hashHistory}>
-        <Route IndexRoute component={Main}>
-            <Route path='/' component={Search}/>
-            <Route path='/' component={Results} />
-            <Route path='/' component={Saved}/>
-        </Route>  
+        <Route path="/" component={Main}>
+            <Route path="/" component={Search}/>
+        </Route> 
     </Router>
 )
 
-module.exports = routes;
+export default routes;

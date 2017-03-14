@@ -1,6 +1,7 @@
 var React = require("react");
 var helper = require("../app/utils/helper.js");
-
+import {connect } from 'react-redux';
+import store from './redux.js'
 
 var Results = React.createClass({
     
@@ -26,10 +27,10 @@ var Results = React.createClass({
 
     },
     render: function() {
-        
+        console.log("this.props.results", this.props.results);
         var component = this;  // setting variable to ensure 'this' context is for the component 
+        if (this.props.results){
         var resultComponents = this.props.results.map(function(result) {
-
             return <div className="row results" key={result._id}>
                 <div className="col-md-4 text-center"><a href={result.web_url}>{result.headline.main}</a></div>
                 <div className="col-md-4">{result.snippet}</div>
@@ -39,6 +40,7 @@ var Results = React.createClass({
                 </div>
             </div>
         });
+        }
         return (<div>
                     <div className="panel panel-default">
                     <div className="panel-heading text-center"><h4>Results</h4></div>
@@ -65,4 +67,12 @@ var Results = React.createClass({
                 </div>) }
 });
 
-module.exports = Results;
+var mapStateToProps = function(store,ownProps){
+
+    return {
+
+        results: store.searchState.results
+    }
+};
+//  export default Results;
+export default connect(mapStateToProps)(Results);

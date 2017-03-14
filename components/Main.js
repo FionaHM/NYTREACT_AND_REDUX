@@ -1,8 +1,9 @@
 var React = require("react");
 // var ReactDOM = require("react-dom");
-var Search = require("./Search.js");
+var Search = require("./Search.js").default;
 
 import {connect } from 'react-redux';
+import store from './redux.js'
 
 var Main = React.createClass({
   // getInitialState: function() {
@@ -24,10 +25,10 @@ var Main = React.createClass({
             </div>
         </div>
         <div className="well">
-          {this.props.children}
+          <Search />
         </div>
     </div>);
   }
 });
 
-module.exports = Main;
+export default Main;

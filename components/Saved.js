@@ -1,8 +1,10 @@
 var React = require("react");
-var helper = require("../app/utils/helper.js");
+var helper = require("../app/utils/helper.js").default;
 
+import {connect } from 'react-redux';
+import store from './redux.js'
 
-var Search = React.createClass({
+var Saved = React.createClass({
 
     removeArticleClick: function(result){
         helper.deleteArticle(result.id)
@@ -15,6 +17,7 @@ var Search = React.createClass({
     },
     render: function() {
         var component = this;  // setting variable to capture 'this' for use below
+        console.log(this.props.saved);
         if (this.props.saved){
             var resultComponents = this.props.saved.map(function(result) {
             return (<div className="row results" key={result.id}>
@@ -26,6 +29,7 @@ var Search = React.createClass({
                     </div>
                 </div>)
             });
+        }
             return (<div className="panel panel-default">
                     <div className="panel-heading text-center"><h4>Saved Articles</h4></div>
                     <div className="panel-body">
@@ -49,7 +53,16 @@ var Search = React.createClass({
                     </div>
                 </div>);
             }
-        }
+        
 });
 
-module.exports = Search;
+
+
+// anything that was state now becomes props
+// var mapStateToProps = function(store, ownProps){
+//     return {
+//         saved: store.searchState.saved
+//     }
+// };
+// module.exports = Search;
+export default connect()(Saved);

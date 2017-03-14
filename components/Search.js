@@ -1,9 +1,9 @@
 var React = require("react");
 var ReactDOM = require("react-dom");
-var APIKey = require('../config/APIKEY.js');
-var Results = require("./Results.js");
+var APIKey = require('../config/APIKEY.js').default;
+var Results = require("./Results.js").default;
 var helper = require("../app/utils/helper.js");
-var Saved = require("./Saved.js");
+var Saved = require("./Saved.js").default;
 
 import {connect } from 'react-redux';
 import store from './redux.js'
@@ -29,20 +29,12 @@ var Search = React.createClass({
             // enddate: "",
             // results: result
             // });
-            store.dispatch({ 
-                type: 'SEARCH_TOPIC',
-                topic: ""
-            }, { 
-                type: 'SEARCH_STARTDATE',
-                startdate: ""
-            }, { 
-                type: 'SEARCH_ENDDATE',
-                enddate: ""
-            }, { 
+            store.dispatch(    {
                 type: 'SEARCH_RESULTS',
                 results: result
-            });
+                        });
         } else {
+            console.log(" in ehere")
             // this.setState({
             //     topic: "",
             //     startdate: "",
@@ -50,15 +42,16 @@ var Search = React.createClass({
             //     results: []
             // });
             store.dispatch({ 
-                type: 'SEARCH_TOPIC',
-                topic: ""
-            }, { 
-                type: 'SEARCH_STARTDATE',
-                startdate: ""
-            }, { 
-                type: 'SEARCH_ENDDATE',
-                enddate: ""
-            }, { 
+            //     type: 'SEARCH_TOPIC',
+            //     topic: ""
+            // }, { 
+            //     type: 'SEARCH_STARTDATE',
+            //     startdate: ""
+            // }, { 
+            //     type: 'SEARCH_ENDDATE',
+            //     enddate: ""
+            // }, {
+                
                 type: 'SEARCH_RESULTS',
                 results: []
             });  
@@ -79,8 +72,8 @@ var Search = React.createClass({
         // startdate: e.target.value
         // })
         store.dispatch({ 
-            type: 'SEARCH_TOPIC',
-            topic: e.target.value
+            type: 'SEARCH_STARTDATE',
+            startdate: e.target.value
         })
     },
     updateEndDate: function(e) {
@@ -88,8 +81,8 @@ var Search = React.createClass({
         // enddate: e.target.value
         // })
         store.dispatch({ 
-            type: 'SEARCH_TOPIC',
-            topic: e.target.value
+            type: 'SEARCH_ENDDATE',
+            enddate: e.target.value
         })
     },
 
@@ -98,7 +91,7 @@ var Search = React.createClass({
     handleClick: function() {
         // gets article data from express server
         if ((this.props.topic !== "") && (this.props.startdate !== "") && (this.props.enddate !== "")){
-            if ((this.state.startdate.length === 8 ) || (this.state.enddate.length === 8 )) {
+            if ((this.props.startdate.length === 8 ) || (this.props.enddate.length === 8 )) {
                 var searchQuery = "/search/"+this.props.topic+"/"+this.props.startdate+"/"+this.props.enddate;
                 // use ESX6 Syntax to maintain 'this' context
                 helper.runQuery(searchQuery).then((response) => {
@@ -146,8 +139,10 @@ var Search = React.createClass({
                         </div>
                     </div>
                     <div>
-                        <Results results={this.props.results} handleSavedData={this.handleSavedData}/>
-                        <Saved saved={this.props.saved} handleSavedData={this.handleSavedData}/>
+                        <Results results={this.props.results} handleSavedData={this.handleSavedData}/>
+                        <Saved saved={this.props.saved} handleSavedData={this.handleSavedData}/>
+                        
+
                     </div>
                 </div>
                  
@@ -156,13 +151,28 @@ var Search = React.createClass({
 });
 
 // anything that was state now becomes props
-const mapStateToProps = function(store){
+
+var mapStateToProps = function(store,ownProps){
+console.log(store.searchState.saved)
+console.log(store.searchState.startdate)
+console.log("being called");
     return {
-        topic: store.searchState.topic,
+        saved: store.searchState.saved,
+        topic:  store.searchState.topic,
         startdate: store.searchState.startdate,
         enddate: store.searchState.enddate,
         results: store.searchState.results
     }
 };
+
+// const mapStateToProps = (state, ownProps = {}) => {
+
+// }
+console.log(mapStateToProps)
+// function mapStateToProps(state) {
+//   console.log(state); // state
+//   console.log(arguments[1]); // undefined
+// }
+
 // module.exports = Search;
 export default connect(mapStateToProps)(Search);
