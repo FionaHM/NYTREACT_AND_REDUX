@@ -1,7 +1,7 @@
 // the reducer function
 import {createStore, combineReducers } from 'redux';
 
-const searchReducer = function(state=[], action){
+const searchReducer = (state=[], action) => {
     switch(action.type){
         case 'SEARCH_TOPIC':
             return Object.assign({},state, {topic: action.topic});

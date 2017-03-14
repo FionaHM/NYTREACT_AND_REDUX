@@ -1,21 +1,25 @@
-var React = require("react");
-// var ReactDOM = require("react-dom");
-var Search = require("./Search.js").default;
-
+import React from "react";
+import Search from "./Search.js";
 import {connect } from 'react-redux';
-import store from './redux.js'
+import store from './redux.js';
 
-var Main = React.createClass({
-  // getInitialState: function() {
-  //     return {
-  //         url:"",
-  //         headline: "",
-  //         source: "",
-  //         pubdate: "",
-  //         abstract: ""
-  //     }
-  // },
-  render: function () {
+// class InputControlES6 extends React.Component {
+//   constructor(props) {
+//     super(props);
+
+//     // Set up initial state
+//     this.state = {
+//       text: props.initialValue || 'placeholder'
+//     };
+
+//     // Functions must be bound manually with ES6 classes or Another way is to bind them inline, where you use them 
+//     this.handleChange = this.handleChange.bind(this);
+//   }
+class Main extends React.Component {
+  constructor(props) {
+      super(props);
+  }
+  render() {
     return (<div className="container">
         <div className="jumbotron">
             <div className="page-header">
@@ -29,6 +33,6 @@ var Main = React.createClass({
         </div>
     </div>);
   }
-});
+};
 
 export default Main;

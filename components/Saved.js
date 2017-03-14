@@ -1,12 +1,31 @@
-var React = require("react");
-var helper = require("../app/utils/helper.js").default;
-
+import React from "react";
+import helper from"../app/utils/helper.js";
 import {connect } from 'react-redux';
-import store from './redux.js'
+import store from './redux.js';
+// class InputControlES6 extends React.Component {
+//   constructor(props) {
+//     super(props);
 
-var Saved = React.createClass({
+//     // Set up initial state
+//     this.state = {
+//       text: props.initialValue || 'placeholder'
+//     };
 
-    removeArticleClick: function(result){
+//     // Functions must be bound manually with ES6 classes or Another way is to bind them inline, where you use them 
+//     this.handleChange = this.handleChange.bind(this);
+//   }
+  
+
+class Saved extends React.Component{
+    constructor(props) {
+        super(props);
+
+        this.removeArticleClick = this.removeArticleClick.bind(this);
+
+
+    }
+
+    removeArticleClick(result){
         helper.deleteArticle(result.id)
         // update state of parent
         helper.querySaved().then((response) => {
@@ -14,18 +33,20 @@ var Saved = React.createClass({
             this.props.handleSavedData(response);
         })
 
-    },
-    render: function() {
-        var component = this;  // setting variable to capture 'this' for use below
+    }
+
+    render() {
+        // var component = this;  // setting variable to capture 'this' for use below
         console.log(this.props.saved);
         if (this.props.saved){
-            var resultComponents = this.props.saved.map(function(result) {
+            var resultComponents = this.props.saved.map((result) => {
+    
             return (<div className="row results" key={result.id}>
                     <div className="col-md-4 text-center"><a href={result.weburl}>{result.headline}</a></div>
                     <div className="col-md-4">{result.snippet}</div>
                     <div className="col-md-2 text-center">{result.created_at}</div>
                     <div className="col-md-2 text-center">
-                        <button onClick={() => component.removeArticleClick(result)} className="btn btn-default text-center btn-primary">Delete</button>
+                        <button onClick={() => this.removeArticleClick(result)} className="btn btn-default text-center btn-primary">Delete</button>
                     </div>
                 </div>)
             });
@@ -54,7 +75,7 @@ var Saved = React.createClass({
                 </div>);
             }
         
-});
+}
 
 
 
@@ -65,4 +86,4 @@ var Saved = React.createClass({
 //     }
 // };
 // module.exports = Search;
-export default connect()(Saved);
+export default Saved;

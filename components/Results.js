@@ -1,14 +1,37 @@
-var React = require("react");
-var helper = require("../app/utils/helper.js");
+import React from "react";
+import helper from"../app/utils/helper.js";
 import {connect } from 'react-redux';
-import store from './redux.js'
+import store from './redux.js';
 
-var Results = React.createClass({
+
+// class InputControlES6 extends React.Component {
+//   constructor(props) {
+//     super(props);
+
+//     // Set up initial state
+//     this.state = {
+//       text: props.initialValue || 'placeholder'
+//     };
+
+//     // Functions must be bound manually with ES6 classes or Another way is to bind them inline, where you use them 
+//     this.handleChange = this.handleChange.bind(this);
+//   }
+  
+class Results extends React.Component {
+
+    constructor(props) {
+        super(props);
+
+  
+
+        // Functions must be bound manually with ES6 classes or Another way is to bind them inline, where you use them 
+        this.saveArticleClick = this.saveArticleClick.bind(this);
+    }
     
     // componentDidMount: function(){
     //      this.setState({ savedCount: this.props.savedcount})
     // },
-    saveArticleClick: function(result){;
+    saveArticleClick(result){
         var articleObj = {
             id: result._id,
             weburl: result.web_url,
@@ -24,9 +47,10 @@ var Results = React.createClass({
             // update state of parent
             this.props.handleSavedData(response);
         })
+    }
 
-    },
-    render: function() {
+    render() {
+        // Pass props to dumb components from smart components
         console.log("this.props.results", this.props.results);
         var component = this;  // setting variable to ensure 'this' context is for the component 
         if (this.props.results){
@@ -65,14 +89,13 @@ var Results = React.createClass({
                     </div>
                 </div>
                 </div>) }
-});
+}
 
-var mapStateToProps = function(store,ownProps){
+const mapStateToProps = (store,ownProps) => {
 
     return {
-
         results: store.searchState.results
     }
-};
+}
 //  export default Results;
 export default connect(mapStateToProps)(Results);

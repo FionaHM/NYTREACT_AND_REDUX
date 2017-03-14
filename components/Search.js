@@ -1,14 +1,41 @@
-var React = require("react");
-var ReactDOM = require("react-dom");
-var APIKey = require('../config/APIKEY.js').default;
-var Results = require("./Results.js").default;
-var helper = require("../app/utils/helper.js");
-var Saved = require("./Saved.js").default;
-
+import React from "react";
+import ReactDOM from "react-dom";
+import APIKey from '../config/APIKEY.js';
+import Results from "./Results.js";
+import helper from"../app/utils/helper.js";
+import Saved from "./Saved.js";
 import {connect } from 'react-redux';
-import store from './redux.js'
+import store from './redux.js';
 
-var Search = React.createClass({
+// https://daveceddia.com/react-es5-createclass-vs-es6-classes/
+// class InputControlES6 extends React.Component {
+//   constructor(props) {
+//     super(props);
+
+//     // Set up initial state
+//     this.state = {
+//       text: props.initialValue || 'placeholder'
+//     };
+
+//     // Functions must be bound manually with ES6 classes or Another way is to bind them inline, where you use them 
+//     this.handleChange = this.handleChange.bind(this);
+//   }
+
+class Search extends React.Component {
+
+    constructor(props) {
+        super(props);
+
+        // Functions must be bound manually with ES6 classes or Another way is to bind them inline, where you use them 
+        this.handleData = this.handleData.bind(this);
+        this.updateTopic = this.updateTopic.bind(this);
+        this.updateStartDate = this.updateStartDate.bind(this);
+        this.updateEndDate = this.updateEndDate.bind(this);
+        this.handleClick  = this.handleClick.bind(this);
+        this.handleSavedData  = this.handleSavedData.bind(this);
+
+
+    }
    
     // getInitialState: function() {
     //     return {
@@ -19,7 +46,7 @@ var Search = React.createClass({
     //         saved: []
     //     }
     // },
-    handleData: function(result){
+    handleData(result){
         // sets state of results and resets input fields
         if (result !== undefined){
 
@@ -56,9 +83,9 @@ var Search = React.createClass({
                 results: []
             });  
         }
-    },
+    }
 
-    updateTopic: function(e) {
+    updateTopic(e) {
     //     this.setState({
     //     topic: e.target.value
     // })
@@ -66,8 +93,9 @@ var Search = React.createClass({
             type: 'SEARCH_TOPIC',
             topic: e.target.value
         })
-    },
-    updateStartDate: function(e) {
+    }
+
+    updateStartDate(e) {
         // this.setState({
         // startdate: e.target.value
         // })
@@ -75,8 +103,9 @@ var Search = React.createClass({
             type: 'SEARCH_STARTDATE',
             startdate: e.target.value
         })
-    },
-    updateEndDate: function(e) {
+    }
+
+    updateEndDate(e) {
         // this.setState({
         // enddate: e.target.value
         // })
@@ -84,11 +113,11 @@ var Search = React.createClass({
             type: 'SEARCH_ENDDATE',
             enddate: e.target.value
         })
-    },
+    }
 
     // This function will respond to the user input
     // change anything that was state to props
-    handleClick: function() {
+    handleClick() {
         // gets article data from express server
         if ((this.props.topic !== "") && (this.props.startdate !== "") && (this.props.enddate !== "")){
             if ((this.props.startdate.length === 8 ) || (this.props.enddate.length === 8 )) {
@@ -101,23 +130,27 @@ var Search = React.createClass({
 
         } 
 
-    },
-    handleSavedData: function(result){
+    }
+
+    handleSavedData(result){
         // this.setState({
         //     saved: result,
         // })
+        console.log(result, "result")
         store.dispatch({ 
             type: 'SEARCH_SAVED',
             saved: result
         })
-    },
-    componentDidMount: function(){
+    }
+
+    componentDidMount(){
         // get data for passing to then component on load
         helper.querySaved().then((response) => {
             this.handleSavedData(response)
         })    
-    },
-    render: function () {
+    }
+
+    render() {
 
         return (<div>
                     <div className="panel panel-default">
@@ -148,14 +181,11 @@ var Search = React.createClass({
                  
       );
     }
-});
+}
 
 // anything that was state now becomes props
 
-var mapStateToProps = function(store,ownProps){
-console.log(store.searchState.saved)
-console.log(store.searchState.startdate)
-console.log("being called");
+const mapStateToProps = (store,ownProps) => {
     return {
         saved: store.searchState.saved,
         topic:  store.searchState.topic,
@@ -165,14 +195,10 @@ console.log("being called");
     }
 };
 
-// const mapStateToProps = (state, ownProps = {}) => {
-
-// }
-console.log(mapStateToProps)
-// function mapStateToProps(state) {
-//   console.log(state); // state
-//   console.log(arguments[1]); // undefined
-// }
-
+// const mapStateToProps = (state) => {
+//     return {
+//         fileList: state.fileList
+//     };
+// };
 // module.exports = Search;
 export default connect(mapStateToProps)(Search);
